@@ -1,4 +1,5 @@
 const path = require('path');
+const routes = require('./controllers/');
 app.use(express.static(path.join(__dirname, 'public')));
 
 
