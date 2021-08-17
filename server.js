@@ -1,5 +1,5 @@
 const path = require('path');
-const routes = require('./controllers/dashboard-routes');
+const routes = require('./controllers');
 const express = require("express")
 const session = require("express-session")
 const sequelize =""
