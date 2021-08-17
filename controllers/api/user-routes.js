@@ -69,20 +69,20 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
-  User.create({
+ const newUser= await User.create({
     username: req.body.username,
     email: req.body.email,
     password: req.body.password
   })
-    .then(dbUserData => {
+    .then(() => {
       req.session.save(() => {
-        req.session.user_id = dbUserData.id;
-        req.session.username = dbUserData.username;
+        req.session.user_id = newUser.id;
+        req.session.username = newUser.username;
         req.session.loggedIn = true;
   
-        res.json(dbUserData);
+        res.json(newUser);
       });
     })
     .catch(err => {
@@ -91,19 +91,19 @@ router.post('/', (req, res) => {
     });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login',async (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
-  User.findOne({
+  const user = await User.findOne({
     where: {
-      email: req.body.email
+      username: req.body.username
     }
-  }).then(dbUserData => {
-    if (!dbUserData) {
+  })
+    if (!user) {
       res.status(400).json({ message: 'No user with that email address!' });
       return;
     }
 
-    const validPassword = dbUserData.checkPassword(req.body.password);
+    const validPassword = user.checkPassword(req.body.password);
 
     if (!validPassword) {
       res.status(400).json({ message: 'Incorrect password!' });
@@ -111,13 +111,13 @@ router.post('/login', (req, res) => {
     }
 
     req.session.save(() => {
-      req.session.user_id = dbUserData.id;
-      req.session.username = dbUserData.username;
+      req.session.user_id = user.id;
+      req.session.username = user.username;
       req.session.loggedIn = true;
   
       res.json({ user: dbUserData, message: 'You are now logged in!' });
     });
-  });
+  
 });
 
 router.post('/logout', (req, res) => {
