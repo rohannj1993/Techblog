@@ -2,7 +2,7 @@ const path = require('path');
 const routes = require('./controllers');
 const express = require("express")
 const session = require("express-session")
-const sequelize =""
+const sequelize =require("./config/connection")
 const PORT = 3000
 const app = express()
 
@@ -17,9 +17,9 @@ const sess = {
   cookie: {},
   resave: false,
   saveUninitialized: true,
-  // store: new SequelizeStore({
-  //   db: sequelize
-  // })
+  store: new SequelizeStore({
+    db: sequelize
+  })
 };
 
 app.use(session(sess));
@@ -29,6 +29,9 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}!`);
-  });
+// app.listen(PORT, () => {
+//     console.log(`App listening on port ${PORT}!`);
+//   });
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log('Now listening to port 3000'));
+});

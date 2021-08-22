@@ -1,15 +1,17 @@
-async function loginFormHandler(event) {
+function loginFormHandler(event) {
   event.preventDefault();
+
 
   const email = document.querySelector('#email-login').value.trim();
   const password = document.querySelector('#password-login').value.trim();
 
   if (email && password) {
-    const response = await fetch('/api/users/login', {
+    console.log(email, password)
+    fetch('/api/users/login', {
       method: 'post',
       body: JSON.stringify({
-        email,
-        password
+        email: "test",
+        password: password
       }),
       headers: { 'Content-Type': 'application/json' }
     });
@@ -22,35 +24,36 @@ async function loginFormHandler(event) {
   }
 }
 
-async function signupFormHandler(event) {
+function signupFormHandler(event) {
   event.preventDefault();
 
-  const username = document.querySelector('#username-signup').value.trim();
-  // console.log(username)
-  const email = document.querySelector('#email-signup').value.trim();
-  // console.log(email)
-  const password = document.querySelector('#password-signup').value.trim();
-  // console.log(password)
+  const username = document.querySelector('#username-signup').value;
+  console.log(username)
+  const email = document.querySelector('#email-signup').value;
+  console.log(email)
+  const password = document.querySelector('#password-signup').value;
+  console.log(password)
 
   if (username && email && password) {
-    const response = await fetch('/api/users', {
+    const response = fetch('/api/users', {
       method: 'post',
       body: JSON.stringify({
-        username: username,
-        email: email,
-        password: password,
+        username,
+        email,
+        password
       }),
       headers: { 'Content-Type': 'application/json' }
     });
-    console.log(username)
-    console.log(email)
-    console.log(password)
-  }
+    // console.log(username)
+    // console.log(email)
+    // console.log(password)
+  
     if (response.ok) {
       document.location.replace('/dashboard/');
     } else {
       alert(response.statusText);
     }
+  }
   }
 
 

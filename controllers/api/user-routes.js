@@ -1,19 +1,4 @@
-// const router = require('express').Router();
 
-
-
-
-
-
-// .then(dbUserData => {
-//     req.session.save(() => {
-//       req.session.user_id = dbUserData.id;
-//       req.session.username = dbUserData.username;
-//       req.session.loggedIn = true;
-  
-//       res.json(dbUserData);
-//     });
-//   })
 const router = require('express').Router();
 const { User, Post, Comment, Vote } = require('../../models');
 
@@ -69,20 +54,21 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
- const newUser= await User.create({
+  console.log(req.body)
+  User.create({
     username: req.body.username,
     email: req.body.email,
     password: req.body.password
   })
-    .then(() => {
+    .then(dbUserData => {
       req.session.save(() => {
-        req.session.user_id = newUser.id;
-        req.session.username = newUser.username;
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
         req.session.loggedIn = true;
   
-        res.json(newUser);
+        res.json(dbUserData);
       });
     })
     .catch(err => {
@@ -91,11 +77,13 @@ router.post('/', async (req, res) => {
     });
 });
 
-router.post('/login',async (req, res) => {
+router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}
-  const user = await User.findOne({
+  console.log('TEST')
+  console.log(req.body)
+  const user = User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   })
     if (!user) {
