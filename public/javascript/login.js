@@ -27,12 +27,12 @@ function loginFormHandler(event) {
 function signupFormHandler(event) {
   event.preventDefault();
 
-  const username = document.querySelector('#username-signup').value;
-  console.log(username)
-  const email = document.querySelector('#email-signup').value;
-  console.log(email)
-  const password = document.querySelector('#password-signup').value;
-  console.log(password)
+  const username = document.querySelector('#username-signup').value.trim();
+  
+  const email = document.querySelector('#email-signup').value.trim();
+  
+  const password = document.querySelector('#password-signup').value.trim();
+  
 
   if (username && email && password) {
     const response = fetch('/api/users', {
@@ -44,9 +44,7 @@ function signupFormHandler(event) {
       }),
       headers: { 'Content-Type': 'application/json' }
     });
-    // console.log(username)
-    // console.log(email)
-    // console.log(password)
+    console.log(response)
   
     if (response.ok) {
       document.location.replace('/dashboard/');
