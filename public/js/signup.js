@@ -4,19 +4,19 @@ function signupFormHandler(event) {
   
     const username = document.querySelector('#username-input-signup').value.trim();
     
-   const email = document.querySelector('#email-signup').value.trim();
+  //  const email = document.querySelector('#email-signup').value.trim();
     
     const password = document.querySelector('#password-input-signup').value.trim();
     // console.log(username),
     // console.log(password)
     
   
-    if (username  && password && email) {
+    if (username  && password) {
       const response = fetch('/api/users', {
         method: 'post',
         body: JSON.stringify({
           username,
-           email,
+          //  email,
           password
         }),
         headers: { 'Content-Type': 'application/json' }
